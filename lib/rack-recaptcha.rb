@@ -1,17 +1,9 @@
 require 'httparty'
+require 'active_support/core_ext/hash/reverse_merge'
+require 'active_support/json'
 
-module Rack
-  class Recaptcha
-    attr_reader :options
-    
-    def initialize(app,options = {})
-      @app, @options = app,options
-    end
-    
-    def call(env)
-      status, headers, body = @app.call env
-      [status, headers, body]
-    end
-    
-  end
-end
+
+
+
+require File.expand_path(File.join(File.dirname(__FILE__),'rack-recaptcha','recaptcha'))
+require File.expand_path(File.join(File.dirname(__FILE__),'rack-recaptcha','helpers'))
