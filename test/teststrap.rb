@@ -20,7 +20,7 @@ class Riot::Situation
       when '/' then [200,'Hello world']
       when '/login'
         if request.post?
-          request[:recaptcha_msg.to_s] == 'true' ? [200, 'post login'] : [200, 'post fail']
+          request[:rack_recaptcha_value.to_s] == 'true' ? [200, 'post login'] : [200, 'post fail']
         else
           [200,'login']
         end
@@ -31,7 +31,6 @@ class Riot::Situation
     }
 
     builder = Rack::Builder.new
-    builder.use Rack::Session::Cookie
     builder.use Rack::Recaptcha, :private_key => PRIVATE_KEY, :public_key => PUBLIC_KEY, :login_path => '/login'
     builder.run main_app
     builder.to_app

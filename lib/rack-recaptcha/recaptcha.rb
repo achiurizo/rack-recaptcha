@@ -14,15 +14,20 @@ module Rack
     def call(env)
       request = Request.new(env)
       if request.post? and request.path == options[:login_path]
-        request.params['recaptcha_msg'] = verify(request.params).to_s
+        request.params['rack_recaptcha_value'], request.params['rack_recaptcha_msg'] = verify(request)
       end
       @app.call(request.env)
     end
 
-    private
-
-    def verify(params={})
-      params['recaptcha_challenge_field'] == '1'
+    def verify(request)
+      params = {
+        :privatekey => Rack::Recaptcha.private_key,
+        :remoteip => request.ip,
+        :challenge => request.params['recaptcha_challenge_field'],
+        :response =>  request.params['recaptcha_response_field']
+      }
+      response = Net::HTTP.post_form URI.parse(RECAPTCHA_VERIFY_URL), params
+      response.body.split("\n")
     end
 
   end
