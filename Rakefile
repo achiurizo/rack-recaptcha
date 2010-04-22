@@ -5,12 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "rack-recaptcha"
-    gem.summary = %Q{recaptcha}
-    gem.description = %Q{recaptcha}
+    gem.summary = %Q{Rack middleware for Recaptcha}
+    gem.description = %Q{Rack middleware Captcha verification using Recaptcha API.}
     gem.email = "mr.arthur.chiu@gmail.com"
     gem.homepage = "http://github.com/achiu/rack-recaptcha"
-    gem.authors = ["Arthur"]
+    gem.authors = ["Arthur Chiu"]
+    gem.add_runtime_dependency "activesupport", ">=0"
     gem.add_development_dependency "riot", ">= 0"
+    gem.add_development_dependency "rack-test", ">=0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

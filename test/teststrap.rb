@@ -4,9 +4,7 @@ require 'rack/mock'
 require 'rack/utils'
 require 'rack/session/cookie'
 require 'rack/builder'
-require 'rr'
 require 'riot'
-require 'riot/rr'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack-recaptcha'))
 
 class Riot::Situation
