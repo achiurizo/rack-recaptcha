@@ -44,6 +44,12 @@ context "Rack::Recaptcha::Helpers" do
       asserts("has js") { topic =~ %r{recaptcha_ajax.js} }.not!
       asserts("has display") { topic =~ %r{RecaptchaOptions} }.not!
     end
+
+    context "server" do
+      asserts("using ssl url") { @helper.recaptcha_tag(:challenge, :ssl => true) }.matches %r{https://api-secure.recaptcha.net}
+      asserts("using non ssl url") { @helper.recaptcha_tag(:ajax) }.matches %r{http://api.recaptcha.net}
+    end
+
   end
 
 

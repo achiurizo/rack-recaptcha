@@ -13,16 +13,17 @@ module Rack
 
       def recaptcha_tag(type= :noscript, options={})
         options.reverse_merge! DEFAULT
+        path = options[:ssl] ? RECAPTCHA_API_SECURE_URL : RECAPTCHA_API_URL
         html = case type.to_sym
         when :challenge
           (<<-CHALLENGE).gsub(/^ #{10}/,'')
-          <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=#{options[:public_key]}>">
+          <script type="text/javascript" src="#{path}/challenge?k=#{options[:public_key]}>">
           </script>
           CHALLENGE
         when :noscript
           (<<-NOSCRIPT).gsub(/^ #{10}/,'')
           <noscript>
-          <iframe src="http://api.recaptcha.net/noscript?k=#{options[:public_key]}" height="#{options[:height]}" width="#{options[:width]}" frameborder="0"></iframe><br>
+          <iframe src="#{path}/noscript?k=#{options[:public_key]}" height="#{options[:height]}" width="#{options[:width]}" frameborder="0"></iframe><br>
           <textarea name="recaptcha_challenge_field" rows="#{options[:row]}" cols="#{options[:cols]}"></textarea>
           <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
           </noscript>
@@ -30,7 +31,7 @@ module Rack
         when :ajax
           (<<-AJAX).gsub(/^ #{10}/,'')
           <div id="ajax_recaptcha"></div>
-          <script type="text/javascript" src="http://api.recaptcha.net/js/recaptcha_ajax.js"></script>
+          <script type="text/javascript" src="#{path}/js/recaptcha_ajax.js"></script>
           <script type="text/javascript">
           Recaptcha.create('#{options[:key]}', document.getElementById('ajax_recaptcha')#{options[:display] ? ',RecaptchaOptions' : ''});
           </script>
