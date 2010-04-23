@@ -7,7 +7,7 @@ require 'rack/builder'
 require 'rr'
 require 'riot'
 require 'riot/rr'
-require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack-recaptcha'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack','recaptcha'))
 
 PUBLIC_KEY = '0'*40
 PRIVATE_KEY = 'X'*40
