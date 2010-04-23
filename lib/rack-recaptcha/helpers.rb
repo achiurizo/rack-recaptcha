@@ -11,7 +11,7 @@ module Rack
 
 
       def recaptcha_tag(type= :noscript, options={})
-        options.reverse_merge! DEFAULT
+        options = DEFAULT.merge(options)
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? RECAPTCHA_API_SECURE_URL : RECAPTCHA_API_URL
         html = case type.to_sym

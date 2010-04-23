@@ -1,5 +1,4 @@
-require 'active_support/core_ext/hash/reverse_merge'
-require 'active_support/json'
+require 'json'
 
 RECAPTCHA_API_URL        = 'http://api.recaptcha.net'
 RECAPTCHA_API_SECURE_URL = 'https://api-secure.recaptcha.net'
