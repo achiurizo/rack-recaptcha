@@ -10,9 +10,10 @@ begin
     gem.email = "mr.arthur.chiu@gmail.com"
     gem.homepage = "http://github.com/achiu/rack-recaptcha"
     gem.authors = ["Arthur Chiu"]
-    gem.add_runtime_dependency "activesupport", ">=0"
+    gem.add_runtime_dependency "json", ">=0"
     gem.add_development_dependency "riot", ">= 0"
     gem.add_development_dependency "rack-test", ">=0"
+    gem.add_development_dependency "rr", ">=0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
