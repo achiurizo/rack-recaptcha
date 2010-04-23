@@ -1,17 +1,11 @@
 require File.expand_path(File.join(File.dirname(__FILE__),'teststrap'))
 require 'fakeweb'
 
-# FakeWeb.allow_net_connect = false
-
-PUBLIC_KEY = '0'*40
-PRIVATE_KEY = 'X'*40
-
+FakeWeb.allow_net_connect = false
 context "Rack::Recaptcha" do
 
   context "basic request" do
-    setup do
-      get("/")
-    end
+    setup { get("/")}
     asserts("status is 200") { last_response.status }.equals 200
     asserts("body is hello world") { last_response.body }.equals 'Hello world'
   end
@@ -29,12 +23,21 @@ context "Rack::Recaptcha" do
       asserts("get login") { last_response.body }.equals 'login'
     end
 
+    context "post pass" do
+      setup do
+        FakeWeb.register_uri(:post, RECAPTCHA_VERIFY_URL, :body => "true\nsuccess")
+        post("/login")
+      end
+      asserts("post login") { last_response.body }.equals 'post login'
+    end
+
     context "post fail" do
       setup do
+        FakeWeb.register_uri(:post, RECAPTCHA_VERIFY_URL, :body => "false\nfailed")
         post("/login")
       end
       asserts("post fail") { last_response.body }.equals 'post fail'
     end
   end
-  
+
 end

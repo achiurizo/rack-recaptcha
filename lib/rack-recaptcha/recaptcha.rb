@@ -13,10 +13,11 @@ module Rack
 
     def call(env)
       request = Request.new(env)
-      if request.post? and request.path == options[:login_path]
-        request.params['rack_recaptcha_value'], request.params['rack_recaptcha_msg'] = verify(request)
+      if request.post? and request.path == @options[:login_path]
+        value, msg = verify(request)
+        env.merge!('recaptcha.value' => value, 'recaptcha.msg' => msg)
       end
-      @app.call(request.env)
+      @app.call(env)
     end
 
     def verify(request)

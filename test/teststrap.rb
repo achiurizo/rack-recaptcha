@@ -7,6 +7,9 @@ require 'rack/builder'
 require 'riot'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack-recaptcha'))
 
+PUBLIC_KEY = '0'*40
+PRIVATE_KEY = 'X'*40
+
 class Riot::Situation
   include Rack::Test::Methods
 
@@ -18,7 +21,7 @@ class Riot::Situation
       when '/' then [200,'Hello world']
       when '/login'
         if request.post?
-          request[:rack_recaptcha_value.to_s] == 'true' ? [200, 'post login'] : [200, 'post fail']
+          env['recaptcha.value'] == 'true' ? [200, 'post login'] : [200, 'post fail']
         else
           [200,'login']
         end
