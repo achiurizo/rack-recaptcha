@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rack-recaptcha}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Arthur Chiu"]
@@ -14,18 +14,18 @@ Gem::Specification.new do |s|
   s.email = %q{mr.arthur.chiu@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README.rdoc"
+     "README.md"
   ]
   s.files = [
     ".document",
      ".gitignore",
      "LICENSE",
-     "README.rdoc",
+     "README.md",
      "Rakefile",
      "VERSION",
-     "lib/rack-recaptcha.rb",
-     "lib/rack-recaptcha/helpers.rb",
-     "lib/rack-recaptcha/recaptcha.rb",
+     "lib/rack/recaptcha.rb",
+     "lib/rack/recaptcha/helpers.rb",
+     "rack-recaptcha.gemspec",
      "test.watchr",
      "test/helpers_test.rb",
      "test/recaptcha_test.rb",
