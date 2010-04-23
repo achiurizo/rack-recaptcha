@@ -39,6 +39,7 @@ Now configure your app to use the middleware. This might be different across eac
 #### Rails
 
     ## environment.rb:
+    config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
     config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :login_path => 'PATH'
 
     ## application_controller.rb
