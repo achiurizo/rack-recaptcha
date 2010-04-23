@@ -3,7 +3,6 @@ module Rack
     module Helpers
 
       DEFAULT= {
-        :public_key => ( Rack::Recaptcha.public_key || ENV['RACK_RECAPTCHA_PUBLIC_KEY']),
         :height => 300,
         :width => 500,
         :row => 3,
@@ -13,11 +12,12 @@ module Rack
 
       def recaptcha_tag(type= :noscript, options={})
         options.reverse_merge! DEFAULT
+        options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? RECAPTCHA_API_SECURE_URL : RECAPTCHA_API_URL
         html = case type.to_sym
         when :challenge
           (<<-CHALLENGE).gsub(/^ #{10}/,'')
-          <script type="text/javascript" src="#{path}/challenge?k=#{options[:public_key]}>">
+          <script type="text/javascript" src="#{path}/challenge?k=#{options[:public_key]}">
           </script>
           CHALLENGE
         when :noscript
@@ -33,7 +33,7 @@ module Rack
           <div id="ajax_recaptcha"></div>
           <script type="text/javascript" src="#{path}/js/recaptcha_ajax.js"></script>
           <script type="text/javascript">
-          Recaptcha.create('#{options[:key]}', document.getElementById('ajax_recaptcha')#{options[:display] ? ',RecaptchaOptions' : ''});
+          Recaptcha.create('#{options[:public_key]}', document.getElementById('ajax_recaptcha')#{options[:display] ? ',RecaptchaOptions' : ''});
           </script>
           AJAX
         else

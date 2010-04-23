@@ -9,6 +9,7 @@ context "Rack::Recaptcha::Helpers" do
 
   context "recaptcha_tag" do
     setup do
+      Rack::Recaptcha.public_key = '0'*40
       @helper = Helper.new
     end
 
@@ -43,6 +44,7 @@ context "Rack::Recaptcha::Helpers" do
       asserts("has challenge js") { topic }.matches %r{challenge}
       asserts("has js") { topic =~ %r{recaptcha_ajax.js} }.not!
       asserts("has display") { topic =~ %r{RecaptchaOptions} }.not!
+      asserts("has public_key") { topic }.matches %r{#{'0'*40}}
     end
 
     context "server" do
