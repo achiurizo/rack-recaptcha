@@ -50,6 +50,10 @@ module Rack
         end + html
       end
 
+      def verified?
+        env['recaptcha.value'] == 'true'
+      end
+
     end
   end
 end

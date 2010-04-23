@@ -1,17 +1,20 @@
 require File.expand_path(File.join(File.dirname(__FILE__),'teststrap'))
 require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack-recaptcha','helpers'))
+require 'riot/rr'
 
 class Helper
+  attr_accessor :env
   include Rack::Recaptcha::Helpers
 end
 
 context "Rack::Recaptcha::Helpers" do
+  setup do
+    Rack::Recaptcha.public_key = '0'*40
+    @helper = Helper.new
+  end
+
 
   context "recaptcha_tag" do
-    setup do
-      Rack::Recaptcha.public_key = '0'*40
-      @helper = Helper.new
-    end
 
     context "ajax" do
       context "with display" do
@@ -54,5 +57,23 @@ context "Rack::Recaptcha::Helpers" do
 
   end
 
+  context "verified?" do
+    
+    context "passing" do
+      setup do
+        mock(@helper.env).[]('recaptcha.value').returns('true')
+        @helper.verified?
+      end
+      asserts_topic
+    end
 
+    context "failing" do
+      setup do
+        mock(@helper.env).[]('recaptcha.value').returns('false')
+        @helper.verified?
+      end
+      asserts_topic.not!
+    end
+
+  end
 end
