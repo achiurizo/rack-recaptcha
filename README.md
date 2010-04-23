@@ -17,9 +17,9 @@ You have to require 'rack-recaptcha' in your gemfile.
     
     Available options for `Rack::Recaptcha` middleware are:
 
-    * `:public_key` -- your ReCaptcha API public key *(required)*
-    * `:private_key` -- your ReCaptcha API private key *(required)*
-    * `:login_path` -- where user goes to login or access the recaptcha   
+    * :public_key -- your ReCaptcha API public key *(required)*
+    * :private_key -- your ReCaptcha API private key *(required)*
+    * :login_path -- where user goes to login or access the recaptcha   
 
 
 Now configure your app to use the middleware. This might be different across each web framework.
