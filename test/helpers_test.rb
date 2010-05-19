@@ -57,12 +57,12 @@ context "Rack::Recaptcha::Helpers" do
 
   end
 
-  context "verified?" do
+  context "recaptcha_valid?" do
     
     context "passing" do
       setup do
         mock(@helper.env).[]('recaptcha.valid').returns(true)
-        @helper.verified?
+        @helper.recaptcha_valid?
       end
       asserts_topic
     end
@@ -70,7 +70,7 @@ context "Rack::Recaptcha::Helpers" do
     context "failing" do
       setup do
         mock(@helper.env).[]('recaptcha.valid').returns(false)
-        @helper.verified?
+        @helper.recaptcha_valid?
       end
       asserts_topic.not!
     end

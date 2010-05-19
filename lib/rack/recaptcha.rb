@@ -1,15 +1,14 @@
 require 'json'
-
-RECAPTCHA_API_URL         = 'http://api.recaptcha.net'
-RECAPTCHA_API_SECURE_URL  = 'https://api-secure.recaptcha.net'
-RECAPTCHA_VERIFY_URL      = 'http://api-verify.recaptcha.net/verify'
-RECAPTCHA_CHALLENGE_FIELD = 'recaptcha_challenge_field'
-RECAPTCHA_RESPONSE_FIELD  = 'recaptcha_response_field'
-
-require File.expand_path(File.join(File.dirname(__FILE__),'recaptcha','helpers'))
+require 'rack/recaptcha/helpers'
 
 module Rack
   class Recaptcha
+    API_URL         = 'http://api.recaptcha.net'
+    API_SECURE_URL  = 'https://api-secure.recaptcha.net'
+    VERIFY_URL      = 'http://api-verify.recaptcha.net/verify'
+    CHALLENGE_FIELD = 'recaptcha_challenge_field'
+    RESPONSE_FIELD  = 'recaptcha_response_field'
+
     attr_reader :options
     class << self
       attr_accessor :private_key, :public_key
@@ -24,8 +23,8 @@ module Rack
 
     def call(env)
       request = Request.new(env)
-      if request.params[RECAPTCHA_CHALLENGE_FIELD] and
-         request.params[RECAPTCHA_RESPONSE_FIELD] and
+      if request.params[CHALLENGE_FIELD] and
+         request.params[RESPONSE_FIELD] and
          (not @paths or @paths.include?(request.path))
 	value, msg = verify(request)
         env.merge!('recaptcha.valid' => value == 'true', 'recaptcha.msg' => msg)
@@ -37,10 +36,10 @@ module Rack
       params = {
         'privatekey' => Rack::Recaptcha.private_key,
         'remoteip' => request.ip,
-        'challenge' => request.params[RECAPTCHA_CHALLENGE_FIELD],
-        'response' =>  request.params[RECAPTCHA_RESPONSE_FIELD]
+        'challenge' => request.params[CHALLENGE_FIELD],
+        'response' =>  request.params[RESPONSE_FIELD]
       }
-      response = Net::HTTP.post_form URI.parse(RECAPTCHA_VERIFY_URL), params
+      response = Net::HTTP.post_form URI.parse(VERIFY_URL), params
       response.body.split("\n")
     end
 

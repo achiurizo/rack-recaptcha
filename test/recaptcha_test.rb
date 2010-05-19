@@ -25,7 +25,7 @@ context "Rack::Recaptcha" do
 
     context "post pass" do
       setup do
-        FakeWeb.register_uri(:post, RECAPTCHA_VERIFY_URL, :body => "true\nsuccess")
+        FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "true\nsuccess")
         post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
       end
       asserts("post login") { last_response.body }.equals 'post login'
@@ -33,7 +33,7 @@ context "Rack::Recaptcha" do
 
     context "post fail" do
       setup do
-        FakeWeb.register_uri(:post, RECAPTCHA_VERIFY_URL, :body => "false\nfailed")
+        FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "false\nfailed")
         post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
       end
       asserts("post fail") { last_response.body }.equals 'post fail'

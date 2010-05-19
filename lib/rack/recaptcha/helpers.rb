@@ -13,7 +13,7 @@ module Rack
       def recaptcha_tag(type= :noscript, options={})
         options = DEFAULT.merge(options)
         options[:public_key] ||= Rack::Recaptcha.public_key
-        path = options[:ssl] ? RECAPTCHA_API_SECURE_URL : RECAPTCHA_API_URL
+        path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
         html = case type.to_sym
         when :challenge
           (<<-CHALLENGE).gsub(/^ #{10}/,'')
@@ -50,7 +50,7 @@ module Rack
         end + html
       end
 
-      def verified?
+      def recaptcha_valid?
         env['recaptcha.valid']
       end
 

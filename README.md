@@ -58,7 +58,7 @@ The `Rack::Recaptcha::Helpers` module (for Sinatra, Rails, Padrino) adds these m
   - you can also pass in :public\_key manually as well.
     - recaptcha\_tag(:challenge,:public\_key => 'PUBLIC')
 
-* `verified?` -- returns whether or not the verification passed.
+* `recaptcha_valid?` -- returns whether or not the verification passed.
 
 #### Example
 
@@ -73,7 +73,7 @@ In Padrino, here's how you would use the helpers.
       
     ## sessions.rb
     post :create, :map => '/login' do
-      if verified?
+      if recaptcha_valid?
         "passed!"
         else
         "failed!"
