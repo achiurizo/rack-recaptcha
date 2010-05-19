@@ -9,7 +9,6 @@ module Rack
     CHALLENGE_FIELD = 'recaptcha_challenge_field'
     RESPONSE_FIELD  = 'recaptcha_response_field'
 
-    attr_reader :options
     class << self
       attr_accessor :private_key, :public_key
     end
