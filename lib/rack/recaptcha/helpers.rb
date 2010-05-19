@@ -51,7 +51,7 @@ module Rack
       end
 
       def verified?
-        env['recaptcha.value'] == 'true'
+        env['recaptcha.valid']
       end
 
     end

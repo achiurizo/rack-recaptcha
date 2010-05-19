@@ -19,20 +19,20 @@ You have to require 'rack-recaptcha' in your gemfile.
 
     * :public_key -- your ReCaptcha API public key *(required)*
     * :private_key -- your ReCaptcha API private key *(required)*
-    * :login_path -- where user goes to login or access the recaptcha   
+    * :paths -- where user goes to login or access the recaptcha (array of paths or single path)
 
 
 Now configure your app to use the middleware. This might be different across each web framework.
 
 #### Sinatra
    ## app.rb
-    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :login_path => 'PATH'
+    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
     helpers Rack::Recaptcha::Helpers
 
 #### Padrino
 
     ## app/app.rb
-    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :login_path => 'PATH'
+    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
     helpers Rack::Recaptcha::Helpers
 
 
@@ -40,7 +40,7 @@ Now configure your app to use the middleware. This might be different across eac
 
     ## environment.rb:
     config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
-    config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :login_path => 'PATH'
+    config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
 
     ## application_controller.rb
     include Rack::Recaptcha::Helpers

@@ -23,18 +23,18 @@ class Riot::Situation
       when '/' then [200,'Hello world']
       when '/login'
         if request.post?
-          env['recaptcha.value'] == 'true' ? [200, 'post login'] : [200, 'post fail']
+          env['recaptcha.valid'] ? [200, 'post login'] : [200, 'post fail']
         else
           [200,'login']
         end
       else
         [404,'Nothing here']
       end
-      [return_code,{'Content-type' => 'text/plain'}, body_text]
+      [return_code,{'Content-type' => 'text/plain'}, [body_text]]
     }
 
     builder = Rack::Builder.new
-    builder.use Rack::Recaptcha, :private_key => PRIVATE_KEY, :public_key => PUBLIC_KEY, :login_path => '/login'
+    builder.use Rack::Recaptcha, :private_key => PRIVATE_KEY, :public_key => PUBLIC_KEY, :paths => '/login'
     builder.run main_app
     builder.to_app
   end
