@@ -81,7 +81,7 @@ In Padrino, here's how you would use the helpers.
     end
 
 
-#### Contributors
+### Contributors
 
 - Daniel Mendler(minad) - support for multiple paths and helpers clean up
 
