@@ -42,7 +42,7 @@ module Rack
       end
 
       def recaptcha_valid?
-        env['recaptcha.valid']
+        request.env['recaptcha.valid']
       end
 
     end

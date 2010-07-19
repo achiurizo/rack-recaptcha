@@ -3,8 +3,16 @@ require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack','rec
 require 'riot/rr'
 
 class HelperTest
-  attr_accessor :env
+  attr_accessor :request
   include Rack::Recaptcha::Helpers
+  
+  def initialize
+    @request = HelperTest::Request.new
+  end
+  
+  class Request
+    attr_accessor :env
+  end
 end
 
 context "Rack::Recaptcha::Helpers" do
@@ -61,7 +69,7 @@ context "Rack::Recaptcha::Helpers" do
     
     context "passing" do
       setup do
-        mock(@helper.env).[]('recaptcha.valid').returns(true)
+        mock(@helper.request.env).[]('recaptcha.valid').returns(true)
         @helper.recaptcha_valid?
       end
       asserts_topic
@@ -69,7 +77,7 @@ context "Rack::Recaptcha::Helpers" do
 
     context "failing" do
       setup do
-        mock(@helper.env).[]('recaptcha.valid').returns(false)
+        mock(@helper.request.env).[]('recaptcha.valid').returns(false)
         @helper.recaptcha_valid?
       end
       asserts_topic.not!

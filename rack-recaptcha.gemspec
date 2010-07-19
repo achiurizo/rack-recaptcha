@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Arthur Chiu"]
-  s.date = %q{2010-05-19}
+  s.date = %q{2010-07-18}
   s.description = %q{Rack middleware Captcha verification using Recaptcha API.}
   s.email = %q{mr.arthur.chiu@gmail.com}
   s.extra_rdoc_files = [
