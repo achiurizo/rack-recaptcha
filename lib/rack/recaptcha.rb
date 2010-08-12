@@ -21,6 +21,10 @@ module Rack
     end
 
     def call(env)
+      dup._call(env)
+    end
+
+    def _call(env)
       request = Request.new(env)
       if request.params[CHALLENGE_FIELD] and
         request.params[RESPONSE_FIELD] and (not @paths or @paths.include?(request.path))
