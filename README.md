@@ -25,7 +25,7 @@ You have to require 'rack-recaptcha' in your gemfile.
 Now configure your app to use the middleware. This might be different across each web framework.
 
 #### Sinatra
-   ## app.rb
+    ## app.rb
     use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
     helpers Rack::Recaptcha::Helpers
 
