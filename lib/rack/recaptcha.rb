@@ -28,18 +28,22 @@ module Rack
       request = Request.new(env)
       if request.params[CHALLENGE_FIELD] and
         request.params[RESPONSE_FIELD] and (not @paths or @paths.include?(request.path))
-        value, msg = verify(request)
+        value, msg = verify(
+          request.ip,
+          request.params[CHALLENGE_FIELD],
+          request.params[RESPONSE_FIELD]
+        )
         env.merge!('recaptcha.valid' => value == 'true', 'recaptcha.msg' => msg)
       end
       @app.call(env)
     end
 
-    def verify(request)
+    def verify(ip, challenge, response)
       params = {
         'privatekey' => Rack::Recaptcha.private_key,
-        'remoteip' => request.ip,
-        'challenge' => request.params[CHALLENGE_FIELD],
-        'response' =>  request.params[RESPONSE_FIELD]
+        'remoteip'   => ip,
+        'challenge'  => challenge,
+        'response'   => response
       }
       response = Net::HTTP.post_form URI.parse(VERIFY_URL), params
       response.body.split("\n")
