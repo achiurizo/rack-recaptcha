@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{rack-recaptcha}
-  s.version = "0.2.2"
+  s.version = "0.3.0"
   s.required_rubygems_version = ">=1.3.6"
   s.authors = ["Arthur Chiu"]
   s.date = %q{2010-07-18}
