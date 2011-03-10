@@ -1,0 +1,27 @@
+PATH
+  remote: .
+  specs:
+    rack-recaptcha (0.2.2)
+      json
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    fakeweb (1.3.0)
+    json (1.5.1)
+    rack (1.2.1)
+    rack-test (0.5.7)
+      rack (>= 1.0)
+    riot (0.12.2)
+      rr
+    rr (1.0.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  fakeweb (~> 1.3.0)
+  rack-recaptcha!
+  rack-test (~> 0.5.7)
+  riot (~> 0.12.1)
+  rr (~> 1.0.2)
