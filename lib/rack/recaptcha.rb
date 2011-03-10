@@ -1,11 +1,10 @@
-require 'json'
-require 'rack/recaptcha/helpers'
+require  File.expand_path '../recaptcha/helpers', __FILE__
 
 module Rack
   class Recaptcha
-    API_URL         = 'http://api.recaptcha.net'
-    API_SECURE_URL  = 'https://api-secure.recaptcha.net'
-    VERIFY_URL      = 'http://api-verify.recaptcha.net/verify'
+    API_URL         = 'http://www.google.com/recaptcha/api'
+    API_SECURE_URL  = 'https://www.google.com/recaptcha/api'
+    VERIFY_URL      = 'http://www.google.com/recaptcha/api/verify'
     CHALLENGE_FIELD = 'recaptcha_challenge_field'
     RESPONSE_FIELD  = 'recaptcha_response_field'
 

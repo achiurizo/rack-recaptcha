@@ -7,7 +7,8 @@ require 'rack/builder'
 require 'rr'
 require 'riot'
 require 'riot/rr'
-require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','rack','recaptcha'))
+require 'fakeweb'
+require File.expand_path '../../lib/rack/recaptcha', __FILE__
 
 PUBLIC_KEY = '0'*40
 PRIVATE_KEY = 'X'*40
@@ -38,5 +39,12 @@ class Riot::Situation
     builder.run main_app
     builder.to_app
   end
+end
 
+class Riot::Context
+
+  # denies_topic currently on edge. Will remove once its released
+  def denies_topic(what)
+    denies(what) { topic }
+  end
 end
