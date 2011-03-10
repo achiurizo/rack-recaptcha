@@ -1,4 +1,4 @@
-# rack-recaptcha
+# rack-recaptcha [![](http://stillmaintained.com/achiu/rack-recaptcha.png)](http://stillmaintained.com/achiu/rack-recaptcha)
 
 Drop this Rack middleware in your web application to enable CAPTCHA verification via Recaptcha API.
 
@@ -84,7 +84,7 @@ In Padrino, here's how you would use the helpers.
 ### Contributors
 
 - Daniel Mendler(minad) - support for multiple paths and helpers clean up
-
+- Eric Anderson(eric1234) - Make verify independently usable.
 
 
 #### Note on Patches/Pull Requests
@@ -99,4 +99,4 @@ In Padrino, here's how you would use the helpers.
 
 #### Copyright
 
-Copyright (c) 2010 Arthur Chiu. See LICENSE for details.
+Copyright (c) 2011 Arthur Chiu. See LICENSE for details.

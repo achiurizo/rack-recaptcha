@@ -12,6 +12,10 @@ module Rack
       attr_accessor :private_key, :public_key
     end
 
+    # Initialize the Rack Middleware. Some of the available options are:
+    #   :public_key  -- your ReCaptcha API public key *(required)*
+    #   :private_key -- your ReCaptcha API private key *(required)*
+    #   :paths       -- where user goes to login or access the recaptcha (array of paths or single path)
     def initialize(app,options = {})
       @app = app
       @paths = options[:paths] && [options[:paths]].flatten.compact
