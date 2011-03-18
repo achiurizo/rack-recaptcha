@@ -38,12 +38,17 @@ Now configure your app to use the middleware. This might be different across eac
 
 #### Rails
 
-    ## environment.rb:
-    config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
-    config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
+    ## application.rb:
+    class Application < Rails::Application
+    # ...
+      config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
+      config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET', :paths => 'PATH'
+    end
 
-    ## application_controller.rb
-    include Rack::Recaptcha::Helpers
+    ## application_helper.rb
+    module ApplicationHelper
+      include Rack::Recaptcha::Helpers
+    end
 
 ### Helpers
 
@@ -80,6 +85,12 @@ In Padrino, here's how you would use the helpers.
       end
     end
 
+In rails, you'll need to use also use the raw method:
+
+    ## new.html.haml
+    - form_tag '/login' do
+      = raw recaptcha_tag(:challenge)
+      = submit_tag "Submit"
 
 ### Contributors
 
