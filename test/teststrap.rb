@@ -35,16 +35,11 @@ class Riot::Situation
     }
 
     builder = Rack::Builder.new
-    builder.use Rack::Recaptcha, :private_key => PRIVATE_KEY, :public_key => PUBLIC_KEY, :paths => '/login'
+    builder.use Rack::Recaptcha, :private_key => PRIVATE_KEY, :public_key => PUBLIC_KEY
     builder.run main_app
     builder.to_app
   end
 end
 
 class Riot::Context
-
-  # denies_topic currently on edge. Will remove once its released
-  def denies_topic(what)
-    denies(what) { topic }
-  end
 end

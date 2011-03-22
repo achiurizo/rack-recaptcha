@@ -15,7 +15,7 @@ module Rack
     # Initialize the Rack Middleware. Some of the available options are:
     #   :public_key  -- your ReCaptcha API public key *(required)*
     #   :private_key -- your ReCaptcha API private key *(required)*
-    #   :paths       -- where user goes to login or access the recaptcha (array of paths or single path)
+    #
     def initialize(app,options = {})
       @app = app
       @paths = options[:paths] && [options[:paths]].flatten.compact
@@ -29,8 +29,7 @@ module Rack
 
     def _call(env)
       request = Request.new(env)
-      if request.params[CHALLENGE_FIELD] and
-        request.params[RESPONSE_FIELD] and (not @paths or @paths.include?(request.path))
+      if request.params[CHALLENGE_FIELD] and request.params[RESPONSE_FIELD]
         value, msg = verify(
           request.ip,
           request.params[CHALLENGE_FIELD],
