@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Rack middleware for Recaptcha}
   s.test_files = Dir.glob("test/**/*")
   s.add_runtime_dependency "json", ">= 0"
-  s.add_development_dependency "riot",      "~> 0.12.1"
+  s.add_development_dependency "riot",      "~> 0.12.3"
   s.add_development_dependency "rack-test", "~> 0.5.7"
   s.add_development_dependency "fakeweb",   "~> 1.3.0"
   s.add_development_dependency "rr",        "~> 1.0.2"
