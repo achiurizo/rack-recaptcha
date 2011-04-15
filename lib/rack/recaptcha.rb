@@ -1,4 +1,5 @@
 require  File.expand_path '../recaptcha/helpers', __FILE__
+require 'net/http'
 
 module Rack
   class Recaptcha
