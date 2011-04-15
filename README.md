@@ -43,8 +43,13 @@ Now configure your app to use the middleware. This might be different across eac
       config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
     end
 
-    ## application_helper.rb
+    ## application_helper.rb or whatever helper you want it in.
     module ApplicationHelper
+      include Rack::Recaptcha::Helpers
+    end
+
+    ## application_controller.rb or whatever controller you want it in.
+    module ApplicationController
       include Rack::Recaptcha::Helpers
     end
 
