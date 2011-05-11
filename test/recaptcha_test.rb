@@ -19,26 +19,23 @@ context "Rack::Recaptcha" do
 
   context "login path" do
 
-    context "get" do
-      setup { get('/login') }
-      asserts("get login") { last_response.body }.equals 'login'
-    end
+    asserts "GET login" do
+      get '/login'
+      last_response.body
+    end.equals 'login'
 
-    context "post pass" do
-      setup do
-        FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "true\nsuccess")
-        post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
-      end
-      asserts("post login") { last_response.body }.equals 'post login'
-    end
 
-    context "post fail" do
-      setup do
-        FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "false\nfailed")
-        post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
-      end
-      asserts("post fail") { last_response.body }.equals 'post fail'
-    end
+    asserts "POST login passes and" do
+      FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "true\nsuccess")
+      post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
+      last_response.body
+    end.equals 'post login'
+
+    asserts "POST login fails and" do
+      FakeWeb.register_uri(:post, Rack::Recaptcha::VERIFY_URL, :body => "false\nfailed")
+      post("/login", 'recaptcha_challenge_field' => 'challenge', 'recaptcha_response_field' => 'response')
+      last_response.body
+    end.equals 'post fail'
   end
 
 end

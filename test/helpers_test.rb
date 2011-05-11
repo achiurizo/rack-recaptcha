@@ -73,21 +73,15 @@ context "Rack::Recaptcha::Helpers" do
   end
 
   context "recaptcha_valid?" do
-    
-    context "passing" do
-      setup do
-        mock(helper_test.request.env).[]('recaptcha.valid').returns(true)
-      end
 
-      asserts("retrieves request") { helper_test.recaptcha_valid? }
+    asserts "that it passes when recaptcha.valid is true" do
+      mock(helper_test.request.env).[]('recaptcha.valid').returns(true)
+      helper_test.recaptcha_valid?
     end
 
-    context "failing" do
-      setup do
-        mock(helper_test.request.env).[]('recaptcha.valid').returns(false)
-      end
-
-      denies("that it retrieves request") { helper_test.recaptcha_valid? }
+    denies "that it passes when recaptcha.valid is false" do
+      mock(helper_test.request.env).[]('recaptcha.valid').returns(false)
+      helper_test.recaptcha_valid?
     end
 
   end
