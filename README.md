@@ -11,10 +11,12 @@ First, install the library with:
 
 You have to require 'rack-recaptcha' in your gemfile.
 
-    ## Gemfile
-    gem 'rack-recaptcha', :require => 'rack/recaptcha'
-    
-    
+````ruby
+## Gemfile
+gem 'rack-recaptcha', :require => 'rack/recaptcha'
+````
+
+
     Available options for `Rack::Recaptcha` middleware are:
 
     * :public_key -- your ReCaptcha API public key *(required)*
@@ -23,35 +25,42 @@ You have to require 'rack-recaptcha' in your gemfile.
 Now configure your app to use the middleware. This might be different across each web framework.
 
 #### Sinatra
-    ## app.rb
-    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
-    helpers Rack::Recaptcha::Helpers
+
+````ruby
+## app.rb
+use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
+helpers Rack::Recaptcha::Helpers
+````
 
 #### Padrino
 
-    ## app/app.rb
-    use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
-    helpers Rack::Recaptcha::Helpers
+````ruby
+## app/app.rb
+use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
+helpers Rack::Recaptcha::Helpers
+````
 
 
 #### Rails
 
-    ## application.rb:
-    class Application < Rails::Application
-    # ...
-      config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
-      config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
-    end
+````ruby
+## application.rb:
+class Application < Rails::Application
+# ...
+  config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
+  config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
+end
 
-    ## application_helper.rb or whatever helper you want it in.
-    module ApplicationHelper
-      include Rack::Recaptcha::Helpers
-    end
+## application_helper.rb or whatever helper you want it in.
+module ApplicationHelper
+  include Rack::Recaptcha::Helpers
+end
 
-    ## application_controller.rb or whatever controller you want it in.
-    module ApplicationController
-      include Rack::Recaptcha::Helpers
-    end
+## application_controller.rb or whatever controller you want it in.
+module ApplicationController
+  include Rack::Recaptcha::Helpers
+end
+````
 
 ### Helpers
 
@@ -83,28 +92,32 @@ to have the helper always return false.
 
 In Padrino, here's how you would use the helpers.
 
-    ## new.haml
-    - form_tag '/login', :class => 'some_form', :method => 'post' do
-      = text_field_tag :email
-      = password_field_tag :password
-      = recaptcha_tag(:challenge)
-      = submit_tag "Submit"
-      
-    ## sessions.rb
-    post :create, :map => '/login' do
-      if recaptcha_valid?
-        "passed!"
-        else
-        "failed!"
-      end
-    end
+````haml
+## new.haml
+- form_tag '/login', :class => 'some_form', :method => 'post' do
+  = text_field_tag :email
+  = password_field_tag :password
+  = recaptcha_tag(:challenge)
+  = submit_tag "Submit"
+
+## sessions.rb
+post :create, :map => '/login' do
+  if recaptcha_valid?
+    "passed!"
+    else
+    "failed!"
+  end
+end
+````
 
 In rails, you'll need to use also use the raw method:
 
-    ## new.html.haml
-    - form_tag '/login' do
-      = raw recaptcha_tag(:challenge)
-      = submit_tag "Submit"
+````haml
+## new.html.haml
+- form_tag '/login' do
+  = raw recaptcha_tag(:challenge)
+  = submit_tag "Submit"
+````
 
 ### Contributors
 
