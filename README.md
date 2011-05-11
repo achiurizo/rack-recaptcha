@@ -68,6 +68,17 @@ The `Rack::Recaptcha::Helpers` module (for Sinatra, Rails, Padrino) adds these m
 
 * `recaptcha_valid?` -- returns whether or not the verification passed.
 
+The `recaptcha_valid?` helper can also be overloaded during tests. You
+can set its response to either true or false by doing the follow:
+
+    Rack::Recaptcha.test_mode!
+
+will have the helper return true or
+
+    Rack::Recaptcha.test_mode! :return => false
+
+to have the helper always return false.
+
 #### Example
 
 In Padrino, here's how you would use the helpers.
