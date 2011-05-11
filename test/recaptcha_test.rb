@@ -17,6 +17,20 @@ context "Rack::Recaptcha" do
     asserts(:public_key).equals PUBLIC_KEY
   end
 
+  context "#test_mode!" do
+    setup { Rack::Recaptcha }
+
+    asserts "that it sets @@test_mode to be true" do
+      topic.test_mode!
+      topic.test_mode
+    end
+
+    denies "that it sets @@test_mode to be true if option set to false" do
+      topic.test_mode! :return => false
+      topic.test_mode
+    end
+  end
+
   context "login path" do
 
     asserts "GET login" do

@@ -84,5 +84,15 @@ context "Rack::Recaptcha::Helpers" do
       helper_test.recaptcha_valid?
     end
 
+    asserts "that it passes when test mode set to pass" do
+      Rack::Recaptcha.test_mode!
+      helper_test.recaptcha_valid?
+    end
+
+    denies "that it passes when test mode set to fil" do
+      Rack::Recaptcha.test_mode! :return => false
+      helper_test.recaptcha_valid?
+    end
+
   end
 end

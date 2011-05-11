@@ -10,7 +10,12 @@ module Rack
     RESPONSE_FIELD  = 'recaptcha_response_field'
 
     class << self
-      attr_accessor :private_key, :public_key
+      attr_accessor :private_key, :public_key, :test_mode
+
+      def test_mode!(options = {})
+        value = options[:return]
+        self.test_mode = value.nil? ? true : options[:return]
+      end
     end
 
     # Initialize the Rack Middleware. Some of the available options are:
