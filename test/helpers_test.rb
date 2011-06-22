@@ -9,9 +9,6 @@ class HelperTest
   end
   
   class Request
-    #def initialize
-    #  @env = Hash.new
-    #end
     attr_accessor :env
   end
 end
@@ -19,16 +16,16 @@ end
 context "Rack::Recaptcha::Helpers" do
   helper(:helper_test) { HelperTest.new }
 
-  setup do
-    #mock(helper_test.request.env).[]('recaptcha.message')
-    Rack::Recaptcha.public_key = '0'*40
-  end
+  setup { Rack::Recaptcha.public_key = '0'*40 }
 
   context "recaptcha_tag" do
 
     context "ajax" do
       context "with display" do
-        setup { helper_test.recaptcha_tag(:ajax,:display => {:theme => 'red'}) }
+        setup do
+          mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+          helper_test.recaptcha_tag(:ajax,:display => {:theme => 'red'})
+        end
 
         asserts_topic('has js').matches %r{recaptcha_ajax.js}
         asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
@@ -36,7 +33,10 @@ context "Rack::Recaptcha::Helpers" do
         asserts_topic('has theme').matches %r{"theme":"red"}
       end
       context "without display" do
-        setup { helper_test.recaptcha_tag(:ajax) }
+        setup do
+          mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+          helper_test.recaptcha_tag(:ajax)
+        end
 
         asserts_topic('has js').matches %r{recaptcha_ajax.js}
         asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
@@ -46,7 +46,10 @@ context "Rack::Recaptcha::Helpers" do
     end
 
     context "noscript" do
-      setup { helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world" }
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
+      end
 
       asserts_topic("iframe").matches %r{iframe}
       asserts_topic("no script tag").matches %r{<noscript>}
@@ -55,20 +58,8 @@ context "Rack::Recaptcha::Helpers" do
     end
 
     context "challenge" do
-      setup { helper_test.recaptcha_tag(:challenge) }
-
-      asserts_topic("has script tag").matches %r{script}
-      asserts_topic("has challenge js").matches %r{challenge}
-      denies_topic("has js").matches %r{recaptcha_ajax.js}
-      denies_topic("has display").matches %r{RecaptchaOptions}
-      asserts_topic("has public_key").matches %r{#{'0'*40}}
-    end
-
-=begin
-    context "challenge with error" do
-      mock(helper_test.request.env).[]('recaptcha.message').returns("Sample Error")
       setup do
-
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
         helper_test.recaptcha_tag(:challenge)
       end
 
@@ -77,17 +68,17 @@ context "Rack::Recaptcha::Helpers" do
       denies_topic("has js").matches %r{recaptcha_ajax.js}
       denies_topic("has display").matches %r{RecaptchaOptions}
       asserts_topic("has public_key").matches %r{#{'0'*40}}
-      asserts_topic("has previous error").matches %r{Sample Error}
     end
-=end
 
     context "server" do
 
       asserts("using ssl url") do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
         helper_test.recaptcha_tag(:challenge, :ssl => true)
       end.matches %r{#{Rack::Recaptcha::API_SECURE_URL}}
 
       asserts("using non ssl url") do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
         helper_test.recaptcha_tag(:ajax)
       end.matches %r{#{Rack::Recaptcha::API_URL}}
     end
@@ -95,63 +86,31 @@ context "Rack::Recaptcha::Helpers" do
   end
 
   context "recaptcha_tag_errors" do
-    #setup { mock(helper_test.request.env).[]('recaptcha.message').returns("Sample Error") }
-=begin
-    context "ajax" do
-      context "with display" do
-        setup { helper_test.recaptcha_tag(:ajax,:display => {:theme => 'red'}) }
-
-        asserts_topic('has js').matches %r{recaptcha_ajax.js}
-        asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
-        asserts_topic('has display').matches %r{RecaptchaOptions}
-        asserts_topic('has theme').matches %r{"theme":"red"}
+    context "challenge with error" do
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns("Sample Error")
+        helper_test.recaptcha_tag(:challenge)
       end
-      context "without display" do
-        setup { helper_test.recaptcha_tag(:ajax) }
-
-        asserts_topic('has js').matches %r{recaptcha_ajax.js}
-        asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
-        denies_topic('has display').matches %r{RecaptchaOptions}
-        denies_topic('has theme').matches %r{"theme":"red"}
-      end
-    end
-
-    context "noscript" do
-      setup { helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world" }
-
-      asserts_topic("iframe").matches %r{iframe}
-      asserts_topic("no script tag").matches %r{<noscript>}
-      asserts_topic("public key").matches %r{hello_world_world}
-      denies_topic("has js").matches %r{recaptcha_ajax.js}
-    end
-
-    context "challenge" do
-      setup { helper_test.recaptcha_tag(:challenge) }
 
       asserts_topic("has script tag").matches %r{script}
       asserts_topic("has challenge js").matches %r{challenge}
       denies_topic("has js").matches %r{recaptcha_ajax.js}
       denies_topic("has display").matches %r{RecaptchaOptions}
       asserts_topic("has public_key").matches %r{#{'0'*40}}
+      asserts_topic("has previous error").matches %r{Sample%20Error}
     end
-=end
 
-    context "challenge with error" do
-      asserts "HTML contains error message" do
-      #setup do
-        mock(helper_test.request.env).[]('recaptcha.message').returns("Sample Error")
-        puts helper_test.request.env
-        #request.env = mock!.[]('recaptcha.message') {"Yo"}
-        helper_test.recaptcha_tag(:challenge)
-      #end
+    context "noscript with error" do
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns("Sample Error")
+        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
+      end
 
-      #asserts_topic("has script tag").matches %r{script}
-      #asserts_topic("has challenge js").matches %r{challenge}
-      #denies_topic("has js").matches %r{recaptcha_ajax.js}
-      #denies_topic("has display").matches %r{RecaptchaOptions}
-      #asserts_topic("has public_key").matches %r{#{'0'*40}}
-      #asserts_topic("has previous error").matches %r{Sample Error}
-        end
+      asserts_topic("iframe").matches %r{iframe}
+      asserts_topic("no script tag").matches %r{<noscript>}
+      asserts_topic("public key").matches %r{hello_world_world}
+      denies_topic("has js").matches %r{recaptcha_ajax.js}
+      asserts_topic("has previous error").matches %r{Sample%20Error}
     end
   end
 
@@ -159,7 +118,6 @@ context "Rack::Recaptcha::Helpers" do
 
     asserts "that it passes when recaptcha.valid is true" do
       mock(helper_test.request.env).[]('recaptcha.valid').returns(true)
-      puts helper_test.request.inspect
       helper_test.recaptcha_valid?
     end
 

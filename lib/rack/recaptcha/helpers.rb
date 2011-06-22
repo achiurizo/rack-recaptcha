@@ -33,12 +33,9 @@ module Rack
         options = DEFAULT.merge(options)
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
-        test = Rack::Recaptcha.test_mode
         params = "k=#{options[:public_key]}"
-        if request.nil? #&& request.env.key?('recaptcha.message')
-          params += "&error=" + request.env['recaptcha.message']
-        end
-        puts params
+        error_message = request.env['recaptcha.msg']
+        params += "&error=" + URI.encode(error_message) unless error_message.nil?
         html = case type.to_sym
         when :challenge
           %{<script type="text/javascript" src="#{path}/challenge?#{params}">
