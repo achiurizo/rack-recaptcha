@@ -33,13 +33,16 @@ module Rack
         options = DEFAULT.merge(options)
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
+        params = "k=#{options[:public_key]}"
+        error_message = request.env['recaptcha.msg']
+        params += "&error=" + URI.encode(error_message) unless error_message.nil?
         html = case type.to_sym
         when :challenge
-          %{<script type="text/javascript" src="#{path}/challenge?k=#{options[:public_key]}">
+          %{<script type="text/javascript" src="#{path}/challenge?#{params}">
             </script>}.gsub(/^ +/, '')
         when :noscript
           %{<noscript>
-            <iframe src="#{path}/noscript?k=#{options[:public_key]}" height="#{options[:height]}" width="#{options[:width]}" frameborder="0"></iframe><br>
+            <iframe src="#{path}/noscript?#{params}" height="#{options[:height]}" width="#{options[:width]}" frameborder="0"></iframe><br>
             <textarea name="recaptcha_challenge_field" rows="#{options[:row]}" cols="#{options[:cols]}"></textarea>
             <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
             </noscript>}.gsub(/^ +/, '')
