@@ -14,16 +14,18 @@ class HelperTest
 end
 
 context "Rack::Recaptcha::Helpers" do
-  setup { Rack::Recaptcha.public_key = '0'*40 }
-
   helper(:helper_test) { HelperTest.new }
 
+  setup { Rack::Recaptcha.public_key = '0'*40 }
 
   context "recaptcha_tag" do
 
     context "ajax" do
       context "with display" do
-        setup { helper_test.recaptcha_tag(:ajax,:display => {:theme => 'red'}) }
+        setup do
+          mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+          helper_test.recaptcha_tag(:ajax,:display => {:theme => 'red'})
+        end
 
         asserts_topic('has js').matches %r{recaptcha_ajax.js}
         asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
@@ -31,7 +33,10 @@ context "Rack::Recaptcha::Helpers" do
         asserts_topic('has theme').matches %r{"theme":"red"}
       end
       context "without display" do
-        setup { helper_test.recaptcha_tag(:ajax) }
+        setup do
+          mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+          helper_test.recaptcha_tag(:ajax)
+        end
 
         asserts_topic('has js').matches %r{recaptcha_ajax.js}
         asserts_topic('has div').matches %r{<div id="ajax_recaptcha"></div>}
@@ -41,7 +46,10 @@ context "Rack::Recaptcha::Helpers" do
     end
 
     context "noscript" do
-      setup { helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world" }
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
+      end
 
       asserts_topic("iframe").matches %r{iframe}
       asserts_topic("no script tag").matches %r{<noscript>}
@@ -50,7 +58,10 @@ context "Rack::Recaptcha::Helpers" do
     end
 
     context "challenge" do
-      setup { helper_test.recaptcha_tag(:challenge) }
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
+        helper_test.recaptcha_tag(:challenge)
+      end
 
       asserts_topic("has script tag").matches %r{script}
       asserts_topic("has challenge js").matches %r{challenge}
@@ -62,14 +73,45 @@ context "Rack::Recaptcha::Helpers" do
     context "server" do
 
       asserts("using ssl url") do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
         helper_test.recaptcha_tag(:challenge, :ssl => true)
       end.matches %r{#{Rack::Recaptcha::API_SECURE_URL}}
 
       asserts("using non ssl url") do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
         helper_test.recaptcha_tag(:ajax)
       end.matches %r{#{Rack::Recaptcha::API_URL}}
     end
 
+  end
+
+  context "recaptcha_tag_errors" do
+    context "challenge with error" do
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns("Sample Error")
+        helper_test.recaptcha_tag(:challenge)
+      end
+
+      asserts_topic("has script tag").matches %r{script}
+      asserts_topic("has challenge js").matches %r{challenge}
+      denies_topic("has js").matches %r{recaptcha_ajax.js}
+      denies_topic("has display").matches %r{RecaptchaOptions}
+      asserts_topic("has public_key").matches %r{#{'0'*40}}
+      asserts_topic("has previous error").matches %r{Sample%20Error}
+    end
+
+    context "noscript with error" do
+      setup do
+        mock(helper_test.request.env).[]('recaptcha.msg').returns("Sample Error")
+        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
+      end
+
+      asserts_topic("iframe").matches %r{iframe}
+      asserts_topic("no script tag").matches %r{<noscript>}
+      asserts_topic("public key").matches %r{hello_world_world}
+      denies_topic("has js").matches %r{recaptcha_ajax.js}
+      asserts_topic("has previous error").matches %r{Sample%20Error}
+    end
   end
 
   context "recaptcha_valid?" do
