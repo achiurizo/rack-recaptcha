@@ -121,8 +121,17 @@ In rails, you'll need to use also use the raw method:
 
 ### Contributors
 
-- Daniel Mendler(minad) - support for multiple paths and helpers clean up
-- Eric Anderson(eric1234) - Make verify independently usable.
+Daniel Mendler - [minad](https://github.com/minad)
+
+  * support for multiple paths and helpers clean up
+
+Eric Anderson - [eric1234](https://github.com/eric1234)
+
+  * Make verify independently usable.
+
+Chad Johnston - [iamthechad](https://github.com/iamthechad)
+
+  * Adding Error Message handling in recaptcha widget
 
 
 #### Note on Patches/Pull Requests
