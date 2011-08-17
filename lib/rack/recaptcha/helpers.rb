@@ -67,7 +67,8 @@ module Rack
       # Helper to return whether the recaptcha was accepted.
       def recaptcha_valid?
         test = Rack::Recaptcha.test_mode
-        test.nil? ? request.env['recaptcha.valid'] : test
+        return test unless test.nil?
+        defined?(request) ? request.env['recaptcha.valid'] : env['recaptcha.valid']
       end
 
     end
