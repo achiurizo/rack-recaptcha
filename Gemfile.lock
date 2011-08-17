@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-recaptcha (0.4.1)
+    rack-recaptcha (0.6.0)
       json
 
 GEM
