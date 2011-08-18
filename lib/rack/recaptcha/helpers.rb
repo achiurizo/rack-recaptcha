@@ -34,7 +34,7 @@ module Rack
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
         params = "k=#{options[:public_key]}"
-        error_message = request.env['recaptcha.msg']
+        error_message = defined?(request) ? request.env['recaptcha.msg'] : env['recaptcha.msg']
         params += "&error=" + URI.encode(error_message) unless error_message.nil?
         html = case type.to_sym
         when :challenge
