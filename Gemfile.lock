@@ -1,20 +1,34 @@
 PATH
   remote: .
   specs:
-    rack-recaptcha (0.6.0)
+    rack-recaptcha (0.6.2)
       json
 
 GEM
   remote: http://rubygems.org/
   specs:
+    archive-tar-minitar (0.5.2)
+    columnize (0.3.4)
     fakeweb (1.3.0)
-    json (1.5.1)
-    rack (1.2.1)
+    json (1.5.3)
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
+    rack (1.3.2)
     rack-test (0.5.7)
       rack (>= 1.0)
-    riot (0.12.3)
+    riot (0.12.4)
       rr
-    rr (1.0.2)
+    rr (1.0.3)
+    ruby-debug-base19 (0.11.25)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.5)
+      archive-tar-minitar (>= 0.5.2)
 
 PLATFORMS
   ruby
@@ -25,3 +39,4 @@ DEPENDENCIES
   rack-test (~> 0.5.7)
   riot (~> 0.12.3)
   rr (~> 1.0.2)
+  ruby-debug19
