@@ -8,17 +8,23 @@ class HelperTest
     @request = HelperTest::Request.new
   end
 
-  def self.new_with_nil_request
-    helper = HelperTest.new
-    helper.request = nil
-    helper
-  end
-
   class Request
     attr_accessor :env
-  
-                   
   end
+end
+
+
+# With "attr_accessor :request" HelperTest has "request" defined as a method
+# even when @request is set to nil
+#
+# defined?(request)
+# => method
+# request
+# => nil
+# self
+# => #<HelperTest:0x00000002125000 @request=nil>
+class HelperTestWithoutRequest
+  include Rack::Recaptcha::Helpers
 end
 
 context "Rack::Recaptcha::Helpers" do
@@ -150,13 +156,13 @@ context "Rack::Recaptcha::Helpers" do
   end
 end
 
+
 context Rack::Recaptcha::Helpers do
-  helper(:helper_test) { HelperTest.new_with_nil_request }
+  helper(:helper_test) { HelperTestWithoutRequest.new }
     context "request object not available.  Rack-recaptcha shouldn't die" do
       setup do
         helper_test.recaptcha_tag(:challenge)
       end 
-    
       asserts_topic("has script tag").matches %r{script}
       asserts_topic("has challenge js").matches %r{challenge}
       denies_topic("has js").matches %r{recaptcha_ajax.js}
