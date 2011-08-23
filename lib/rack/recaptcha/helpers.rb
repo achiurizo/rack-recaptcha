@@ -34,8 +34,8 @@ module Rack
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
         params = "k=#{options[:public_key]}"
-        error_message = defined?(request) ? request.env['recaptcha.msg'] : env['recaptcha.msg']
-        params += "&error=" + URI.encode(error_message) unless error_message.nil?
+        error_message = request.env['recaptcha.msg'] if request
+        params += "&error=" + URI.encode(error_message) unless error_message.nil? 
         html = case type.to_sym
         when :challenge
           %{<script type="text/javascript" src="#{path}/challenge?#{params}">
@@ -67,8 +67,7 @@ module Rack
       # Helper to return whether the recaptcha was accepted.
       def recaptcha_valid?
         test = Rack::Recaptcha.test_mode
-        return test unless test.nil?
-        defined?(request) ? request.env['recaptcha.valid'] : env['recaptcha.valid']
+        test.nil? ? request.env['recaptcha.valid'] : test
       end
 
     end
