@@ -3,7 +3,7 @@ require File.expand_path '../teststrap', __FILE__
 class HelperTest
   attr_accessor :request
   include Rack::Recaptcha::Helpers
-  
+
   def initialize
     @request = HelperTest::Request.new
   end
@@ -119,14 +119,14 @@ context "Rack::Recaptcha::Helpers" do
         mock(helper_test.request.env).[]('recaptcha.msg').returns("Sample Error")
         helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
       end
-      
+
       asserts_topic("iframe").matches %r{iframe}
       asserts_topic("no script tag").matches %r{<noscript>}
       asserts_topic("public key").matches %r{hello_world_world}
       denies_topic("has js").matches %r{recaptcha_ajax.js}
       asserts_topic("has previous error").matches %r{Sample%20Error}
     end
-   
+
   end
 
   context "recaptcha_valid?" do
@@ -162,11 +162,12 @@ context Rack::Recaptcha::Helpers do
     context "request object not available.  Rack-recaptcha shouldn't die" do
       setup do
         helper_test.recaptcha_tag(:challenge)
-      end 
+      end
+
       asserts_topic("has script tag").matches %r{script}
       asserts_topic("has challenge js").matches %r{challenge}
       denies_topic("has js").matches %r{recaptcha_ajax.js}
       denies_topic("has display").matches %r{RecaptchaOptions}
       asserts_topic("has public_key").matches %r{#{'0'*40}}
-    end 
+    end
 end

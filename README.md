@@ -133,9 +133,12 @@ Chad Johnston - [iamthechad](https://github.com/iamthechad)
 
   * Adding Error Message handling in recaptcha widget
 
+Eric Hu - [eric-hu](https://github.com/eric-hu)
+
+  * Patching error message issue when no `request` is present
 
 #### Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
