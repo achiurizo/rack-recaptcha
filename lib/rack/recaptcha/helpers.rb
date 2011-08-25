@@ -35,7 +35,7 @@ module Rack
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
         params = "k=#{options[:public_key]}"
         error_message = request.env['recaptcha.msg'] if defined?(request)
-        params += "&error=" + URI.encode(error_message) unless error_message.nil? 
+        params += "&error=" + uri_parser.escape(error_message) unless error_message.nil? 
         html = case type.to_sym
         when :challenge
           %{<script type="text/javascript" src="#{path}/challenge?#{params}">
@@ -68,6 +68,12 @@ module Rack
       def recaptcha_valid?
         test = Rack::Recaptcha.test_mode
         test.nil? ? request.env['recaptcha.valid'] : test
+      end
+
+      private
+
+      def uri_parser
+        @uri_parser ||= URI.const_defined?(:Parser) ? URI::Parser.new : URI
       end
 
     end
