@@ -45,10 +45,12 @@ helpers Rack::Recaptcha::Helpers
 
 ````ruby
 ## application.rb:
-class Application < Rails::Application
-# ...
-  config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
-  config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
+module YourRailsAppName
+  class Application < Rails::Application
+    ...
+    config.gem 'rack-recaptcha', :lib => 'rack/recaptcha'
+    config.middleware.use Rack::Recaptcha, :public_key => 'KEY', :private_key => 'SECRET'
+  end
 end
 
 ## application_helper.rb or whatever helper you want it in.
@@ -57,8 +59,10 @@ module ApplicationHelper
 end
 
 ## application_controller.rb or whatever controller you want it in.
-module ApplicationController
+class ApplicationController < ActionController::Base
+  ...
   include Rack::Recaptcha::Helpers
+  ...
 end
 ````
 
