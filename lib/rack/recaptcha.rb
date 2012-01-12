@@ -10,7 +10,7 @@ module Rack
     RESPONSE_FIELD  = 'recaptcha_response_field'
 
     class << self
-      attr_accessor :private_key, :public_key, :test_mode
+      attr_accessor :private_key, :public_key, :test_mode, :proxy_host, :proxy_port, :proxy_user, :proxy_password
 
       def test_mode!(options = {})
         value = options[:return]
@@ -27,6 +27,10 @@ module Rack
       @paths = options[:paths] && [options[:paths]].flatten.compact
       self.class.private_key = options[:private_key]
       self.class.public_key = options[:public_key]
+      self.class.proxy_host = options[:proxy_host]
+      self.class.proxy_port = options[:proxy_port]
+      self.class.proxy_user = options[:proxy_user]
+      self.class.proxy_password = options[:proxy_password]
     end
 
     def call(env)
@@ -53,7 +57,21 @@ module Rack
         'challenge'  => challenge,
         'response'   => response
       }
-      response = Net::HTTP.post_form URI.parse(VERIFY_URL), params
+
+      uri  = URI.parse(VERIFY_URL)
+      http = Net::HTTP.start(uri.host, uri.port)
+
+      if self.class.proxy_host && self.class.proxy_port
+        http = Net::HTTP.Proxy(self.class.proxy_host,
+                               self.class.proxy_port,
+                               self.class.proxy_user,
+                               self.class.proxy_password).start(uri.host, uri.port)
+      end
+
+      request           = Net::HTTP::Post.new(uri.path)
+      request.form_data = params
+      response          = http.request(request)
+
       response.body.split("\n")
     end
 

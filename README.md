@@ -21,6 +21,10 @@ gem 'rack-recaptcha', :require => 'rack/recaptcha'
 
     * :public_key -- your ReCaptcha API public key *(required)*
     * :private_key -- your ReCaptcha API private key *(required)*
+    * :proxy_host -- the HTTP Proxy hostname *(optional)*
+    * :proxy_port -- the HTTP Proxy port *(optional)*
+    * :proxy_user -- the HTTP Proxy user *(optional, omit unless the proxy requires it)*
+    * :proxy_password -- the HTTP Proxy password *(optional, omit unless the proxy requires it)*
 
 Now configure your app to use the middleware. This might be different across each web framework.
 
@@ -140,6 +144,10 @@ Chad Johnston - [iamthechad](https://github.com/iamthechad)
 Eric Hu - [eric-hu](https://github.com/eric-hu)
 
   * Patching error message issue when no `request` is present
+
+Tobias Begalke - [elcamino](https://github.com/elcamino)
+
+  * Added HTTP Proxy support
 
 #### Note on Patches/Pull Requests
 
