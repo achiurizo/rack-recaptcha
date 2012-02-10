@@ -1,5 +1,7 @@
 # rack-recaptcha [![](http://stillmaintained.com/achiu/rack-recaptcha.png)](http://stillmaintained.com/achiu/rack-recaptcha)
 
+[![Build Status](https://secure.travis-ci.org/achiu/rack-recaptcha.png)](http://travis-ci.org/achiu/rack-recaptcha)
+
 Drop this Rack middleware in your web application to enable CAPTCHA verification via Recaptcha API.
 
 ## How to Use
@@ -148,6 +150,10 @@ Eric Hu - [eric-hu](https://github.com/eric-hu)
 Tobias Begalke - [elcamino](https://github.com/elcamino)
 
   * Added HTTP Proxy support
+
+Julik Tarkhanov - [julik](https://github.com/julik)
+
+  * Adding rack-recaptcha to travis-ci
 
 #### Note on Patches/Pull Requests
 
