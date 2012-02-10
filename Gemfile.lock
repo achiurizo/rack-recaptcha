@@ -9,6 +9,7 @@ GEM
   specs:
     fakeweb (1.3.0)
     json (1.6.5)
+    json (1.6.5-java)
     rack (1.3.2)
     rack-test (0.5.7)
       rack (>= 1.0)
@@ -18,6 +19,7 @@ GEM
     rr (1.0.3)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
