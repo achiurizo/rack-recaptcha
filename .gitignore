@@ -18,5 +18,6 @@ coverage
 rdoc
 pkg
 .rvmrc
+.rbx/
 
 ## PROJECT::SPECIFIC
