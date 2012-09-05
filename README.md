@@ -76,27 +76,60 @@ end
 
 The `Rack::Recaptcha::Helpers` module (for Sinatra, Rails, Padrino) adds these methods to your app:
 
-* `recaptcha_tag(type,options={})` -- generates the appropriate recaptcha scripts. must be included in a form_tag
-  - recaptcha\_tag(:challenge) => generates a recaptcha script
-  - recaptcha\_tag(:ajax) => generates an ajax recaptcha script
-    - if passed in a :display option, you can further alter the recaptcha\_tag
-      - recaptcha\_tag(:ajax, :display => {:theme => 'white'}) - recaptcha tag in white theme.
-  - recaptcha\_tag(:noscript) => generates a recaptcha noscript
-  - you can also pass in :public\_key manually as well.
-    - recaptcha\_tag(:challenge,:public\_key => 'PUBLIC')
+Return a javascript recaptcha form
+```ruby
+  recaptcha_tag :challenge
+```
 
-* `recaptcha_valid?` -- returns whether or not the verification passed.
+Return a non-javascript recaptcha form
+```ruby
+  recaptcha_tag :noscript
+```
+
+Return a ajax recaptcha form
+```ruby
+  recaptcha_tag :ajax
+```
+
+For ajax recaptcha's, you can pass additional options like:
+```ruby
+  recaptcha_tag :ajax, :display => { :theme => 'red'}
+```
+
+For non-ajax recaptcha's, you can pass additional options like:
+```ruby
+  # Overrides the key set in Middleware
+  recaptcha_tag :challenge, :public_key => KEY
+
+  # Adjust Height and/or Width
+  recaptcha_tag :noscript, :height => 300, :width => 500
+
+  # Adjust the rows and/or columns
+  recaptcha_tag :challenge, :row => 3, :cols => 5
+
+  # Set the language
+  recaptcha_tag :noscript, :language => :en
+```
+
+To test whether or not the verification passed, you can use:
+
+```ruby
+  recaptcha_valid?
+```
 
 The `recaptcha_valid?` helper can also be overloaded during tests. You
-can set its response to either true or false by doing the follow:
+can set its response to either true or false by doing the following:
 
-    Rack::Recaptcha.test_mode!
+```ruby
+ # Have recaptcha_valid? return true
+ Rack::Recaptcha.test_mode!
 
-will have the helper return true or
+ # Or have it return false
+ Rack::Recaptcha.test_mode! :return => false
+```
 
-    Rack::Recaptcha.test_mode! :return => false
 
-to have the helper always return false.
+For additional options and resources checkout the [customization page](https://developers.google.com/recaptcha/docs/customization)
 
 #### Example
 
@@ -155,6 +188,10 @@ Julik Tarkhanov - [julik](https://github.com/julik)
 
   * Adding rack-recaptcha to travis-ci
 
+Rob Worley - [robworley](https://github.com/robworley)
+  
+  * Adding language setting for recaptcha form
+
 #### Note on Patches/Pull Requests
 
 * Fork the project.
@@ -167,4 +204,4 @@ Julik Tarkhanov - [julik](https://github.com/julik)
 
 #### Copyright
 
-Copyright (c) 2011 Arthur Chiu. See LICENSE for details.
+Copyright (c) 2010, 2011, 2012 Arthur Chiu. See LICENSE for details.
