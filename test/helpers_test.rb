@@ -46,6 +46,7 @@ context "Rack::Recaptcha::Helpers" do
         asserts_topic('has display').matches %r{RecaptchaOptions}
         asserts_topic('has theme').matches %r{"theme":"red"}
       end
+
       context "without display" do
         setup do
           mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
@@ -62,19 +63,20 @@ context "Rack::Recaptcha::Helpers" do
     context "noscript" do
       setup do
         mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
-        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world"
+        helper_test.recaptcha_tag :noscript, :public_key => "hello_world_world", :language => :en
       end
 
       asserts_topic("iframe").matches %r{iframe}
       asserts_topic("no script tag").matches %r{<noscript>}
       asserts_topic("public key").matches %r{hello_world_world}
+      asserts_topic("has language").matches %r{hl=en}
       denies_topic("has js").matches %r{recaptcha_ajax.js}
     end
 
     context "challenge" do
       setup do
         mock(helper_test.request.env).[]('recaptcha.msg').returns(nil)
-        helper_test.recaptcha_tag(:challenge)
+        helper_test.recaptcha_tag(:challenge, :language => :en)
       end
 
       asserts_topic("has script tag").matches %r{script}
@@ -82,6 +84,7 @@ context "Rack::Recaptcha::Helpers" do
       denies_topic("has js").matches %r{recaptcha_ajax.js}
       denies_topic("has display").matches %r{RecaptchaOptions}
       asserts_topic("has public_key").matches %r{#{'0'*40}}
+      asserts_topic("has language").matches %r{hl=en}
     end
 
     context "server" do
