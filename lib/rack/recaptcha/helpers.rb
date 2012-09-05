@@ -29,13 +29,15 @@ module Rack
       #  :width      - Adjust the width of the form
       #  :row        - Adjust the rows for the challenge field
       #  :cols       - Adjust the column for the challenge field
+      #  :language   - Set the language
       def recaptcha_tag(type= :noscript, options={})
         options = DEFAULT.merge(options)
         options[:public_key] ||= Rack::Recaptcha.public_key
         path = options[:ssl] ? Rack::Recaptcha::API_SECURE_URL : Rack::Recaptcha::API_URL
         params = "k=#{options[:public_key]}"
+        params += "&hl=" + uri_parser.escape(options[:language].to_s) if options[:language]
         error_message = request.env['recaptcha.msg'] if defined?(request)
-        params += "&error=" + uri_parser.escape(error_message) unless error_message.nil? 
+        params += "&error=" + uri_parser.escape(error_message) unless error_message.nil?
         html = case type.to_sym
         when :challenge
           %{<script type="text/javascript" src="#{path}/challenge?#{params}">
