@@ -59,13 +59,15 @@ module Rack
       }
 
       uri  = URI.parse(VERIFY_URL)
-      http = Net::HTTP.start(uri.host, uri.port)
+   
 
       if self.class.proxy_host && self.class.proxy_port
         http = Net::HTTP.Proxy(self.class.proxy_host,
                                self.class.proxy_port,
                                self.class.proxy_user,
                                self.class.proxy_password).start(uri.host, uri.port)
+      else
+        http = Net::HTTP.start(uri.host, uri.port)
       end
 
       request           = Net::HTTP::Post.new(uri.path)
