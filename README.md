@@ -192,6 +192,10 @@ Rob Worley - [robworley](https://github.com/robworley)
   
   * Adding language setting for recaptcha form
 
+sam71 - [sam71](https://github.com/sam71)
+
+  * Fix recaptcha hanging when used in proxy environment.
+
 #### Note on Patches/Pull Requests
 
 * Fork the project.
