@@ -1,20 +1,21 @@
 require 'rubygems'
+gem 'minitest'
+require 'minitest/autorun'
 require 'rack/test'
 require 'rack/mock'
 require 'rack/utils'
 require 'rack/session/cookie'
 require 'rack/builder'
-require 'rr'
-require 'riot'
-require 'riot/rr'
 require 'fakeweb'
+require 'rr'
 require File.expand_path '../../lib/rack/recaptcha', __FILE__
 
-PUBLIC_KEY = '0'*40
+PUBLIC_KEY  = '0'*40
 PRIVATE_KEY = 'X'*40
 
-class Riot::Situation
+class MiniTest::Spec
   include Rack::Test::Methods
+  include RR::Adapters::MiniTest
 
   def app
     main_app = lambda { |env|
@@ -39,7 +40,4 @@ class Riot::Situation
     builder.run main_app
     builder.to_app
   end
-end
-
-class Riot::Context
 end
